@@ -31,7 +31,7 @@ jobs:
           echo "🔍 SSH key fingerprint:"
           ssh-keygen -l -f ~/.ssh/id_ed25519 || echo "❌ Invalid key format"
 
-          echo "${{ secrets.PAT }}" > > ~/.ssh/id_test
+          echo "${{ secrets.PAT }}" > ~/.ssh/id_test
           wc -c ~/.ssh/id_test
           
 
