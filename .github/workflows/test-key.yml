@@ -20,6 +20,7 @@ jobs:
 
       - name: Decode and check private key
         run: |
+        
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
@@ -29,3 +30,8 @@ jobs:
 
           echo "🔍 SSH key fingerprint:"
           ssh-keygen -l -f ~/.ssh/id_ed25519 || echo "❌ Invalid key format"
+
+          echo "${{ secrets.PAT }}" > > ~/.ssh/id_test
+          wc -c ~/.ssh/id_test
+          
+
