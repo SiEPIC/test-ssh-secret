@@ -1,0 +1,31 @@
+name: Test SSH Key Secret
+
+on:
+  push:
+    paths-ignore:
+      - '**/README.md'
+
+jobs:
+  test-ssh-key:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if SSH_PRIVATE_KEY secret is present
+        run: |
+          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            echo "❌ SSH_PRIVATE_KEY is EMPTY"
+          else
+            echo "✅ SSH_PRIVATE_KEY is present (masked)"
+          fi
+
+      - name: Decode and check private key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          echo "🔍 Checking file size:"
+          wc -c ~/.ssh/id_ed25519
+
+          echo "🔍 SSH key fingerprint:"
+          ssh-keygen -l -f ~/.ssh/id_ed25519 || echo "❌ Invalid key format"
